@@ -7,7 +7,7 @@ class DisplayWindow:
             cls._instance = super().__new__(cls)
         return cls._instance
 
-    def __init__(self, width = None, height = None, name = None):
+    def __init__(self, width = 1200, height = 800, name = "Chess"):
         if not hasattr(self, "_initialized"):
             self._initialized = True
             self._width = width
@@ -25,6 +25,10 @@ class DisplayWindow:
     def getSurface(self) -> pygame.Surface:
         return self._screen
 
-    def getPieceScale(self) -> tuple[float, float]:
-        #return self._width / 8, self._height / 8
-        return 100, 100
+    def getScalingFactor(self) -> float:
+        return 100
+
+    def getHeight(self) -> float:
+        return self._height
+    def getWidth(self) -> float:
+        return self._width
