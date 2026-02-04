@@ -1,33 +1,69 @@
 import pygame
 
 from src.Data.Enums.Color import Color
-from src.Data.Enums.Layer import Layer
-from src.Data.Enums.SpriteType import SpriteType
+from src.Data.Enums.ObjectType import ObjectType
 from src.Data.Position.Position import Position
-from src.UI.Display.DisplayWindow import DisplayWindow
 
 
 class GameObject(pygame.sprite.Sprite):
-    def __init__(self, color: Color, spriteType: SpriteType, position: Position):
+    def __init__(self, color: Color, objectType: ObjectType, position: Position):
         super().__init__()
         self._color = color
-        self._spriteType = spriteType
+        self._objectType = objectType
         self._position = position
+        self._image = None
+        self._rect = None
+        self._scale = None
+        self._displacement = None
 
-        self._layer = Layer.DEFAULT.value
+    def makeSprite(self):
+        pass
 
-        self._image = pygame.image.load(f"src\\Assets\\{color.value}_{spriteType.value}.png")
-        pieceScale = (DisplayWindow().getScalingFactor(), DisplayWindow().getScalingFactor())
-        self._image = pygame.transform.smoothscale(self._image, pieceScale)
-        self._rect = self._image.get_rect()
-        self._rect.topleft = (self._position.file.value, self._position.rank.value)
+    def __str__(self):
+        return f"{self._color.name}, {self._objectType.name}, {self._position}"
+
+    def __repr__(self):
+        return self.__str__()
+
+    @property
+    def color(self):
+        return self._color
+
+    @property
+    def position(self):
+        return self._position
+
+    @property
+    def objectType(self):
+        return self._objectType
 
     @property
     def image(self):
         return self._image
+
     @property
     def rect(self):
         return self._rect
 
-    def moveset(self) -> list[Position]:
+    @image.setter
+    def image(self, image: pygame.Surface):
+        self._image = image
+
+    @rect.setter
+    def rect(self, rect: pygame.Rect):
+        self._rect = rect
+
+    @color.setter
+    def color(self, color: Color):
+        self._color = color
+
+    @position.setter
+    def position(self, position: Position):
+        self._position = position
+
+    @objectType.setter
+    def objectType(self, spriteType: ObjectType):
+        self._objectType = spriteType
+
+    def moveset(self) -> list[list[Position]]:
         pass

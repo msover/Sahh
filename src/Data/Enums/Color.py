@@ -4,6 +4,7 @@ from enum import Enum
 class Color(Enum):
     BLACK = "b"
     WHITE = "w"
+    NaN = "w"
 
     @classmethod
     def match(cls, index: int):

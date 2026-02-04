@@ -25,7 +25,13 @@ class DisplayWindow:
     def getSurface(self) -> pygame.Surface:
         return self._screen
 
-    def getScalingFactor(self) -> float:
+    def getPossibleMoveScalingFactor(self) -> float:
+        return 40
+
+    def getPieceScalingFactor(self) -> float:
+        return 94
+
+    def getTileScalingFactor(self) -> float:
         return 100
 
     def getHeight(self) -> float:

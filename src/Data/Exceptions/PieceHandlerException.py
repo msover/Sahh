@@ -1,0 +1,2 @@
+class PieceHandlerException(Exception):
+    pass
