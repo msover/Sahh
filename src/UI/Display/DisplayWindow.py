@@ -7,7 +7,7 @@ class DisplayWindow:
             cls._instance = super().__new__(cls)
         return cls._instance
 
-    def __init__(self, width = 1200, height = 800, name = "Chess"):
+    def __init__(self, width = 800, height = 800, name = "Chess"):
         if not hasattr(self, "_initialized"):
             self._initialized = True
             self._width = width

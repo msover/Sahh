@@ -1,3 +1,5 @@
+import os
+
 import pygame
 
 from src.Data.Enums.Color import Color
@@ -25,8 +27,9 @@ class GameObjects:
         self._pieces: list[Piece] = []
         self._tiles: list[Tile] = []
         self._possibleMoves: list[PossibleMove] = []
-        self.setPieces(TextRepo("src\\Assets\\PieceLayout.txt").getData())
-        self.setTiles(TextRepo("src\\Assets\\TileLayout.txt").getData())
+
+        self.setPieces(TextRepo(os.path.join("src", "Assets", "PieceLayout.txt")).getData())
+        self.setTiles(TextRepo(os.path.join("src", "Assets", "TileLayout.txt")).getData())
 
     def add(self, gameObject: GameObject):
         if isinstance(gameObject, Tile):
