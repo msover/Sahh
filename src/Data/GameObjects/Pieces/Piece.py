@@ -2,12 +2,13 @@ import os
 
 import pygame
 
-from src.Data.Enums.Color import Color
-from src.Data.Enums.Layer import Layer
-from src.Data.Enums.ObjectType import ObjectType
+from src.Data.Enums.Visual.Color import Color
+from src.Data.Enums.Visual.Layer import Layer
+from src.Data.Enums.Visual.ObjectType import ObjectType
 from src.Data.GameObjects.GameObject import GameObject
+from src.Data.GameObjects.MovesetOption import MovesetOption
 from src.Data.Position.Position import Position
-from src.UI.Display.DisplayWindow import DisplayWindow
+from src.UI.Display.DisplayConstants import DisplayConstants
 
 
 class Piece(GameObject):
@@ -17,8 +18,8 @@ class Piece(GameObject):
         self._layer = Layer.STATIC_PIECE.value
 
 
-        self._scale = (DisplayWindow().getPieceScalingFactor(), DisplayWindow().getPieceScalingFactor())
-        self._displacement = (DisplayWindow().getTileScalingFactor() - DisplayWindow().getPieceScalingFactor()) / 2
+        self._scale = (DisplayConstants.PIECE_SCALING_FACTOR, DisplayConstants.PIECE_SCALING_FACTOR)
+        self._displacement = (DisplayConstants.TILE_SCALING_FACTOR - DisplayConstants.TILE_SCALING_FACTOR) / 2
         if self.objectType != ObjectType.EMPTY:
             self.makeSprite()
 
@@ -29,6 +30,9 @@ class Piece(GameObject):
         self._rect = self._image.get_rect()
         self._rect.topleft = (self._position.file.value + self._displacement,
                               self._position.rank.value + self._displacement)
+
+    def moveset(self) -> list[MovesetOption]:
+        pass
 
     @property
     def image(self):

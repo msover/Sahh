@@ -1,7 +1,7 @@
 import pygame
 
-from src.Data.Enums.Color import Color
-from src.Data.Enums.ObjectType import ObjectType
+from src.Data.Enums.Visual.Color import Color
+from src.Data.Enums.Visual.ObjectType import ObjectType
 from src.Data.Position.Position import Position
 
 
@@ -64,6 +64,3 @@ class GameObject(pygame.sprite.Sprite):
     @objectType.setter
     def objectType(self, spriteType: ObjectType):
         self._objectType = spriteType
-
-    def moveset(self) -> list[list[Position]]:
-        pass

@@ -1,5 +1,5 @@
-from src.Data.Enums.File import File
-from src.Data.Enums.Rank import Rank
+from src.Data.Enums.Position.File import File
+from src.Data.Enums.Position.Rank import Rank
 
 
 class Position:

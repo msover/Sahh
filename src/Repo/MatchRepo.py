@@ -1,19 +1,19 @@
-from src.Data.Enums.Color import Color
+from src.Data.Enums.Visual.Color import Color
 from src.Data.Enums.GameState import GameState
 
 
 class MatchRepo:
     def __init__(self):
-        self.turn = Color.WHITE
+        self.turnColor = Color.WHITE
         self.gameState = GameState.CHOOSE_PIECE
         self.whiteState = GameState.IDLE
         self.blackState = GameState.IDLE
 
     def switchTurn(self):
-        match self.turn:
+        match self.turnColor:
             case Color.WHITE:
-                self.turn = Color.BLACK
+                self.turnColor = Color.BLACK
                 return
             case Color.BLACK:
-                self.turn = Color.WHITE
+                self.turnColor = Color.WHITE
                 return

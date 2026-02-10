@@ -1,10 +1,10 @@
 import os
 
 import pygame
+from pygame import Surface
 
-from src.Data.Enums.Color import Color
-from src.Data.Enums.ObjectType import ObjectType
-from src.Data.GameObjects.Board.PossibleMove import PossibleMove
+from src.Data.Enums.Visual.Color import Color
+from src.Data.Enums.Visual.ObjectType import ObjectType
 from src.Data.GameObjects.Board.Tile import Tile
 from src.Data.GameObjects.GameObject import GameObject
 from src.Data.GameObjects.Pieces.Piece import Piece
@@ -14,11 +14,10 @@ from src.Data.GameObjects.Pieces.Set.Pawn import Pawn
 from src.Data.GameObjects.Pieces.Set.Queen import Queen
 from src.Data.GameObjects.Pieces.Set.Rook import Rook
 from src.Data.GameObjects.Pieces.Set.Bishop import Bishop
-from src.Data.Enums.File import File
+from src.Data.Enums.Position.File import File
 from src.Data.Position.Position import Position
-from src.Data.Enums.Rank import Rank
+from src.Data.Enums.Position.Rank import Rank
 from src.Repo.TextRepo import TextRepo
-from src.UI.Display.DisplayWindow import DisplayWindow
 
 
 class GameObjects:
@@ -26,18 +25,14 @@ class GameObjects:
         self._sprites = pygame.sprite.LayeredUpdates()
         self._pieces: list[Piece] = []
         self._tiles: list[Tile] = []
-        self._possibleMoves: list[PossibleMove] = []
-
-        self.setPieces(TextRepo(os.path.join("src", "Assets", "PieceLayout.txt")).getData())
-        self.setTiles(TextRepo(os.path.join("src", "Assets", "TileLayout.txt")).getData())
+        self.initPieces(TextRepo(os.path.join("src", "Assets", "PieceLayout.txt")).getData())
+        self.initTiles(TextRepo(os.path.join("src", "Assets", "TileLayout.txt")).getData())
 
     def add(self, gameObject: GameObject):
         if isinstance(gameObject, Tile):
             self._tiles.append(gameObject)
         if isinstance(gameObject, Piece):
             self._pieces.append(gameObject)
-        if isinstance(gameObject, PossibleMove):
-            self._possibleMoves.append(gameObject)
         self._sprites.add(gameObject)
 
     def remove(self, gameObject: GameObject):
@@ -45,26 +40,13 @@ class GameObjects:
             self._tiles.remove(gameObject)
         if isinstance(gameObject, Piece):
             self._pieces.remove(gameObject)
-        if isinstance(gameObject, PossibleMove):
-            self._possibleMoves.remove(gameObject)
         self._sprites.remove(gameObject)
 
-    def wipePossibleMoves(self):
-        while len(self._possibleMoves) > 0:
-            possibleMove = self._possibleMoves.pop()
-            self._sprites.remove(possibleMove)
 
     def movePiece(self, newPosition: Position):
         self._pieces[0].position = newPosition
 
-    def setTiles(self, layout):
-        for row in range(8):
-            for col in range(8):
-                color = Color.match(layout[row][col])
-                pos = Position(File.matchSetup(col), Rank.matchSetup(row))
-                self.add(Tile(color, pos))
-
-    def createGameObject(self, gameObject: GameObject):
+    def createPiece(self, gameObject: GameObject):
         match gameObject.objectType:
             case ObjectType.ROOK:
                 return Rook(gameObject.color, gameObject.position)
@@ -93,22 +75,28 @@ class GameObjects:
                 return tile
         return Tile(Color.NaN, Position(File.NaN, Rank.NaN))
 
-    def setPieces(self, layout):
+    def initPieces(self, layout):
         for row in range(8):
             for col in range(8):
                 spriteType = ObjectType.match(layout[row][col])
                 if spriteType == ObjectType.EMPTY:
                     continue
 
-                pos = Position(File.matchSetup(col), Rank.matchSetup(row))
+                pos = Position(File.matchIndex(col), Rank.matchIndex(row))
                 color = Color.WHITE
                 if row < 4:
                     color = Color.BLACK
                 gameObject = GameObject(color, spriteType, pos)
-                self.add(self.createGameObject(gameObject))
+                self.add(self.createPiece(gameObject))
 
-    def draw(self):
+    def initTiles(self, layout):
+        for row in range(8):
+            for col in range(8):
+                color = Color.match(layout[row][col])
+                pos = Position(File.matchIndex(col), Rank.matchIndex(row))
+                self.add(Tile(color, pos))
+
+    def updatePieces(self, surface: Surface):
         for piece in self._pieces:
             self._sprites.change_layer(piece, piece.layer)
-        self._sprites.draw(DisplayWindow().getSurface())
-        DisplayWindow().update()
+        self._sprites.draw(surface)

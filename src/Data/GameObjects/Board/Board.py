@@ -1,11 +1,11 @@
 import pygame
 import os
-from src.Data.Enums.Color import Color
-from src.Data.Enums.Layer import Layer
-from src.Data.Enums.ObjectType import ObjectType
+from src.Data.Enums.Visual.Color import Color
+from src.Data.Enums.Visual.Layer import Layer
+from src.Data.Enums.Visual.ObjectType import ObjectType
 from src.Data.GameObjects.GameObject import GameObject
 from src.Data.Position.Position import Position
-from src.UI.Display.DisplayWindow import DisplayWindow
+from src.UI.Display.DisplayConstants import DisplayConstants
 
 
 class Board(GameObject):
@@ -13,7 +13,7 @@ class Board(GameObject):
         super().__init__(color, objectType, position)
 
         self._layer = Layer.TILE.value
-        self._scale = (DisplayWindow().getTileScalingFactor(), DisplayWindow().getTileScalingFactor())
+        self._scale = (DisplayConstants.TILE_SCALING_FACTOR, DisplayConstants.TILE_SCALING_FACTOR)
         if self.objectType != ObjectType.EMPTY:
             self.makeSprite()
 

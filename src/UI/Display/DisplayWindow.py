@@ -1,5 +1,8 @@
 import pygame
 
+from src.UI.Display.DisplayConstants import DisplayConstants
+
+
 class DisplayWindow:
     _instance = None
     def __new__(cls, *args, **kwargs):
@@ -7,34 +10,20 @@ class DisplayWindow:
             cls._instance = super().__new__(cls)
         return cls._instance
 
-    def __init__(self, width = 800, height = 800, name = "Chess"):
+    def __init__(self, width = DisplayConstants.SCREEN_WIDTH, height = DisplayConstants.SCREEN_HEIGHT, name = DisplayConstants.SCREEN_TITLE):
         if not hasattr(self, "_initialized"):
+            self._gameObjects = None
             self._initialized = True
             self._width = width
             self._height = height
             self._name = name
-            self._screen = pygame.display.set_mode((self._width, self._height))
             pygame.display.set_caption(self._name)
+            self._screen = pygame.display.set_mode((self._width, self._height))
 
-    def clear(self):
-        self._screen.fill((0, 0, 0))
+    def setGameObjects(self, gameObjects):
+        self._gameObjects = gameObjects
 
     def update(self):
+        self._gameObjects.updatePieces(self._screen)
         pygame.display.flip()
 
-    def getSurface(self) -> pygame.Surface:
-        return self._screen
-
-    def getPossibleMoveScalingFactor(self) -> float:
-        return 40
-
-    def getPieceScalingFactor(self) -> float:
-        return 94
-
-    def getTileScalingFactor(self) -> float:
-        return 100
-
-    def getHeight(self) -> float:
-        return self._height
-    def getWidth(self) -> float:
-        return self._width

@@ -1,8 +1,8 @@
-from src.Data.Enums.Color import Color
+from src.Data.Enums.Visual.Color import Color
 from src.Data.GameObjects.Board.Tile import Tile
-from src.Data.Enums.File import File
+from src.Data.Enums.Position.File import File
 from src.Data.Position.Position import Position
-from src.Data.Enums.Rank import Rank
+from src.Data.Enums.Position.Rank import Rank
 from src.Repo.GameObjects import GameObjects
 from src.Repo.MatchRepo import MatchRepo
 

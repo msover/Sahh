@@ -1,10 +1,9 @@
 import pygame
 
-from src.Data.Enums.AnimationStatus import AnimationStatus
-from src.Data.Enums.Layer import Layer
+from src.Data.Enums.Visual.AnimationStatus import AnimationStatus
+from src.Data.Enums.Visual.Layer import Layer
 from src.Data.GameObjects.Pieces.Piece import Piece
 from src.Data.Position.Position import Position
-from src.Repo.MatchRepo import MatchRepo
 
 
 class Animation:

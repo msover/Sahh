@@ -1,27 +1,26 @@
 import pygame
 
-from src.Data.Enums.Color import Color
 from src.Data.Enums.GameState import GameState
 from src.Data.Exceptions.PieceHandlerException import PieceHandlerException
-from src.Data.GameObjects.Pieces.Set.Rook import Rook
-from src.Data.Enums.File import File
+from src.Data.Enums.Position.File import File
 from src.Data.Position.Position import Position
-from src.Data.Enums.Rank import Rank
+from src.Data.Enums.Position.Rank import Rank
 from src.GameController.Handlers.PieceHandler import PieceHandler
 from src.GameController.Handlers.TileHandler import TileHandler
 from src.Repo.Animations import Animations
 from src.Repo.GameObjects import GameObjects
 from src.Repo.MatchRepo import MatchRepo
+from src.UI.Display.DisplayWindow import DisplayWindow
 
 
 class GameController:
     def __init__(self):
         self.gameObjects = GameObjects()
         self.animations = Animations()
-        self.testRook = Rook(Color.BLACK, Position(File.C, Rank.THREE))
         self.match = MatchRepo()
         self.pieceHandler = PieceHandler(self.match, self.gameObjects)
         self.tileHandler = TileHandler(self.match, self.gameObjects)
+        DisplayWindow().setGameObjects(self.gameObjects)
 
     def clickEvent(self, event):
         x, y = event.pos
@@ -31,7 +30,6 @@ class GameController:
                 try:
                     self.pieceHandler.selectedPiece = self.gameObjects.getPieceAtPosition(clickPosition)
                     self.tileHandler.selectedTile = self.gameObjects.getTileAtPosition(clickPosition)
-                    self.tileHandler.selectedTile.switchHighlight()
                     self.match.gameState = GameState.MOVE_PIECE
                     return
                 except PieceHandlerException as e:
@@ -43,7 +41,7 @@ class GameController:
             case GameState.MOVE_PIECE:
                 try:
                     self.pieceHandler.targetPosition = clickPosition
-                    self.tileHandler.selectedTile.switchHighlight()
+                    self.tileHandler.selectedTile.setHighlight()
                     self.animations.queue(self.pieceHandler.makeAnimation())
                     self.pieceHandler.reset()
                     self.tileHandler.reset()
@@ -65,8 +63,10 @@ class GameController:
             match event.type:
                 case pygame.QUIT:
                     self.quitEvent()
+                    break
                 case pygame.MOUSEBUTTONDOWN:
                     self.clickEvent(event)
+                    break
 
         self.animations.execute()
-        self.gameObjects.draw()
+        DisplayWindow().update()

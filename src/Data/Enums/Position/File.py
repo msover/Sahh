@@ -1,25 +1,32 @@
 from cmath import inf
 from enum import Enum
 
-from src.UI.Display.DisplayWindow import DisplayWindow
+from src.UI.Display.DisplayConstants import DisplayConstants
+
 
 class File(Enum):
-    A = 0 * DisplayWindow().getTileScalingFactor()
-    B = 1 * DisplayWindow().getTileScalingFactor()
-    C = 2 * DisplayWindow().getTileScalingFactor()
-    D = 3 * DisplayWindow().getTileScalingFactor()
-    E = 4 * DisplayWindow().getTileScalingFactor()
-    F = 5 * DisplayWindow().getTileScalingFactor()
-    G = 6 * DisplayWindow().getTileScalingFactor()
-    H = 7 * DisplayWindow().getTileScalingFactor()
-    NaN = 8 * DisplayWindow().getTileScalingFactor()
+    A = 0 * DisplayConstants.TILE_SCALING_FACTOR
+    B = 1 * DisplayConstants.TILE_SCALING_FACTOR
+    C = 2 * DisplayConstants.TILE_SCALING_FACTOR
+    D = 3 * DisplayConstants.TILE_SCALING_FACTOR
+    E = 4 * DisplayConstants.TILE_SCALING_FACTOR
+    F = 5 * DisplayConstants.TILE_SCALING_FACTOR
+    G = 6 * DisplayConstants.TILE_SCALING_FACTOR
+    H = 7 * DisplayConstants.TILE_SCALING_FACTOR
+    NaN = 8 * DisplayConstants.TILE_SCALING_FACTOR
 
     @classmethod
     def all(cls):
         return [f for f in File if f != File.NaN]
 
     @classmethod
-    def matchSetup(cls, index: int):
+    def getIndex(cls, file):
+        if file.name == File.A:
+            return 0
+        return file.value // DisplayConstants.TILE_SCALING_FACTOR
+
+    @classmethod
+    def matchIndex(cls, index: int):
         match index:
             case 0:
                 return File.A

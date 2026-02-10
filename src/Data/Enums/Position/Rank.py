@@ -1,27 +1,24 @@
 from cmath import inf
 from enum import Enum
 
-from src.UI.Display.DisplayWindow import DisplayWindow
+from src.UI.Display.DisplayConstants import DisplayConstants
 
 
 class Rank(Enum):
-    NaN = 8 * DisplayWindow().getTileScalingFactor()
-    ONE = 7 * DisplayWindow().getTileScalingFactor()
-    TWO = 6 * DisplayWindow().getTileScalingFactor()
-    THREE = 5 * DisplayWindow().getTileScalingFactor()
-    FOUR = 4 * DisplayWindow().getTileScalingFactor()
-    FIVE = 3 * DisplayWindow().getTileScalingFactor()
-    SIX = 2 * DisplayWindow().getTileScalingFactor()
-    SEVEN = 1 * DisplayWindow().getTileScalingFactor()
-    EIGHT = 0 * DisplayWindow().getTileScalingFactor()
+    NaN = 8 * DisplayConstants.TILE_SCALING_FACTOR
+    ONE = 7 * DisplayConstants.TILE_SCALING_FACTOR
+    TWO = 6 * DisplayConstants.TILE_SCALING_FACTOR
+    THREE = 5 * DisplayConstants.TILE_SCALING_FACTOR
+    FOUR = 4 * DisplayConstants.TILE_SCALING_FACTOR
+    FIVE = 3 * DisplayConstants.TILE_SCALING_FACTOR
+    SIX = 2 * DisplayConstants.TILE_SCALING_FACTOR
+    SEVEN = 1 * DisplayConstants.TILE_SCALING_FACTOR
+    EIGHT = 0 * DisplayConstants.TILE_SCALING_FACTOR
 
 
     @classmethod
     def all(cls):
         return [r for r in Rank if r != Rank.NaN]
-
-    def getNormalized(self) -> float:
-        return self.value // DisplayWindow().getTileScalingFactor()
 
     @classmethod
     def getFromNormalized(cls, index: int):
@@ -46,7 +43,13 @@ class Rank(Enum):
                 return None
 
     @classmethod
-    def matchSetup(cls, index: int):
+    def getIndex(cls, rank):
+        if rank == Rank.EIGHT:
+            return 0
+        return rank.value // DisplayConstants.TILE_SCALING_FACTOR
+
+    @classmethod
+    def matchIndex(cls, index: int):
         match index:
             case 0:
                 return Rank.EIGHT
